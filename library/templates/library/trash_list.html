@@ -1,0 +1,21 @@
+<!-- library/templates/library/trash_list.html -->
+<!DOCTYPE html><html><head><title>Trash</title>
+<style>body{font-family:system-ui;background:#0f172a;color:#e2e8f0;padding:40px;}
+.container{max-width:900px;margin:0 auto;} table{width:100%;background:#1e293b;border-radius:12px;border-collapse:collapse;overflow:hidden;}
+th,td{padding:14px;text-align:left;border-bottom:1px solid #334155;} th{background:#0f172a;}
+.btn{padding:8px 14px;border-radius:6px;border:0;cursor:pointer;text-decoration:none;font-size:13px;font-weight:600;}
+.btn-success{background:#10b981;color:white;} .btn-danger{background:#ef4444;color:white;}
+a.back{color:#94a3b8;}</style></head>
+<body><div class="container">
+  <a class="back" href="{% url 'library:book_list' %}">← Back to library</a>
+  <h1 style="margin:16px 0;">🗑 Trash <span style="font-size:14px;color:#94a3b8;">(auto-deletes after 24h)</span></h1>
+  <table><thead><tr><th>Title</th><th>Deleted at</th><th>Actions</th></tr></thead><tbody>
+    {% for b in books %}
+    <tr><td>{{ b.title }}</td><td>{{ b.deleted_at }}</td>
+    <td>
+      <a class="btn btn-success" href="{% url 'library:book_restore' b.pk %}">Restore</a>
+      <a class="btn btn-danger" href="{% url 'library:book_hard_delete' b.pk %}">Delete forever</a>
+    </td></tr>
+    {% empty %}<tr><td colspan="3" style="text-align:center;padding:30px;color:#64748b;">Trash is empty.</td></tr>{% endfor %}
+  </tbody></table>
+</div></body></html>

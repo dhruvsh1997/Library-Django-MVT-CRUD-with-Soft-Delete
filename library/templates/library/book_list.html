@@ -1,0 +1,65 @@
+<!-- library/templates/library/book_list.html -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Library</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, system-ui, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; padding: 40px 20px; }
+  .container { max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: 2.2rem; margin-bottom: 24px; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .toolbar { display: flex; gap: 12px; margin-bottom: 24px; align-items: center; }
+  .toolbar input { flex: 1; padding: 12px 16px; border-radius: 10px; border: 1px solid #334155; background: #1e293b; color: #e2e8f0; font-size: 15px; }
+  .btn { padding: 12px 18px; border-radius: 10px; border: 0; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-block; transition: transform .15s; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; }
+  .btn-danger { background: #ef4444; color: white; }
+  .btn-ghost { background: #334155; color: #e2e8f0; }
+  table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; }
+  th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid #334155; }
+  th { background: #0f172a; font-size: 13px; text-transform: uppercase; letter-spacing: .5px; }
+  tr:last-child td { border-bottom: 0; }
+  .actions a { margin-right: 8px; font-size: 13px; }
+  .empty { padding: 40px; text-align: center; color: #64748b; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📚 My Library</h1>
+  <form method="get" class="toolbar">
+    <input name="q" value="{{ query }}" placeholder="Search by title or author..." />
+    <button class="btn btn-primary" type="submit">Search</button>
+    <a class="btn btn-primary" href="{% url 'library:book_add' %}">+ Add Book</a>
+    <a class="btn btn-ghost" href="{% url 'library:trash_list' %}">🗑 Trash</a>
+  </form>
+  <table>
+    <thead><tr><th>Title</th><th>Author</th><th>Year</th><th>ISBN</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for b in books %}
+      <tr>
+        <td>{{ b.title }}</td><td>{{ b.author }}</td>
+        <td>{{ b.published_year }}</td><td>{{ b.isbn }}</td>
+        <td class="actions">
+          <a class="btn btn-ghost" href="{% url 'library:book_edit' b.pk %}">Edit</a>
+          <a class="btn btn-danger" href="{% url 'library:book_delete' b.pk %}">Delete</a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td class="empty" colspan="5">No books yet. Add one to start your library.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+  // Tiny UX touch: highlight search matches
+  const q = "{{ query|escapejs }}";
+  if (q) {
+    document.querySelectorAll('td').forEach(td => {
+      td.innerHTML = td.innerHTML.replace(new RegExp(q, 'gi'),
+        m => `<mark style="background:#fbbf24;padding:0 3px;border-radius:3px;">${m}</mark>`);
+    });
+  }
+</script>
+</body>
+</html>

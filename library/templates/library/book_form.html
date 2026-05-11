@@ -1,0 +1,39 @@
+<!-- library/templates/library/book_form.html -->
+<!DOCTYPE html>
+<html><head><title>{{ action }} Book</title>
+<style>
+  body { font-family: system-ui; background: #0f172a; color: #e2e8f0; padding: 40px 20px; }
+  .card { max-width: 500px; margin: 0 auto; background: #1e293b; padding: 32px; border-radius: 16px; }
+  h1 { margin-bottom: 24px; }
+  label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 6px; }
+  input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #e2e8f0; font-size: 15px; margin-bottom: 16px; }
+  .err { color: #f87171; font-size: 13px; margin-top: -12px; margin-bottom: 12px; }
+  .btn { padding: 12px 20px; border-radius: 8px; border: 0; font-weight: 600; cursor: pointer; }
+  .btn-primary { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; }
+  a { color: #94a3b8; margin-left: 12px; }
+</style></head>
+<body>
+<div class="card">
+  <h1>{{ action }} Book</h1>
+  <form method="post">
+    {% csrf_token %}
+    <label>Title</label>
+    <input name="title" value="{{ data.title|default:'' }}" />
+    {% if errors.title %}<div class="err">{{ errors.title }}</div>{% endif %}
+
+    <label>Author</label>
+    <input name="author" value="{{ data.author|default:'' }}" />
+    {% if errors.author %}<div class="err">{{ errors.author }}</div>{% endif %}
+
+    <label>ISBN</label>
+    <input name="isbn" value="{{ data.isbn|default:'' }}" />
+
+    <label>Published Year</label>
+    <input name="published_year" value="{{ data.published_year|default:'' }}" />
+    {% if errors.published_year %}<div class="err">{{ errors.published_year }}</div>{% endif %}
+
+    <button class="btn btn-primary" type="submit">{{ action }}</button>
+    <a href="{% url 'library:book_list' %}">Cancel</a>
+  </form>
+</div>
+</body></html>

@@ -1,0 +1,14 @@
+<!-- library/templates/library/book_confirm_hard_delete.html -->
+<!DOCTYPE html><html><head><title>Permanently Delete</title>
+<style>body{font-family:system-ui;background:#0f172a;color:#e2e8f0;padding:40px;}
+.card{max-width:480px;margin:0 auto;background:#1e293b;padding:28px;border-radius:14px;border:1px solid #ef4444;}
+.btn{padding:10px 18px;border-radius:8px;border:0;cursor:pointer;font-weight:600;}
+.btn-danger{background:#ef4444;color:white;} a{color:#94a3b8;margin-left:12px;}</style></head>
+<body><div class="card">
+  <h2 style="color:#ef4444;">Permanently delete "{{ book.title }}"?</h2>
+  <p style="margin:12px 0;color:#94a3b8;">This cannot be undone.</p>
+  <form method="post">{% csrf_token %}
+    <button class="btn btn-danger" type="submit">Yes, delete forever</button>
+    <a href="{% url 'library:trash_list' %}">Cancel</a>
+  </form>
+</div></body></html>
